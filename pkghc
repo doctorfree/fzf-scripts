@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# install_packages.sh - select and install a HashiCorp Vault package
+#
+
+have_fzf=$(type -p fzf)
+[ "${have_fzf}" ] || {
+  printf "\n\nfzf not found. exiting\n"
+  exit 1
+}
+
+LOCA="/var/lib/apt/lists/apt.releases.hashicorp.com"
+PKGS=$(grep ^Package: ${LOCA}*Packages | sort -u | awk ' { print $2 } ')
+
+choices=()
+numinstalled=0
+for pkg in ${PKGS}
+do
+  dpkg -l ${pkg} > /dev/null 2>&1
+  [ $? -eq 0 ] && {
+    choices+=("  ${pkg} (installed)")
+    ((numinstalled++))
+  }
+done
+for pkg in ${PKGS}
+do
+  dpkg -l ${pkg} > /dev/null 2>&1
+  [ $? -eq 0 ] || choices+=("✗  ${pkg}")
+done
+choice=$(printf "%s\n" "${choices[@]}" | fzf --header-lines=${numinstalled} --prompt=" Select HashiCorp package to install  " --layout=reverse --border --exit-0)
+package=$(echo "${choice}" | awk ' { print $2 } ')
+if [[ " ${choices[*]} " =~ " ${choice} " ]]; then
+  [ "${package}" ] && sudo apt install ${package}
+else
+  printf "\nUnknown choice: ${choice}\n"
+fi
