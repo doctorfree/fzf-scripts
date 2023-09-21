@@ -6,7 +6,7 @@ Almost all of them require various tools from coreutils like `awk` `sed` `cut`, 
 
 ## [fv](fv)
 
-Lists or searches for files and opens them with a command, defaults to `vim`. Kind of a shortcut for `vim $(ag 'foo' | fzf)`, lists files if no search string is given.
+Lists or searches for files and opens them with a command, defaults to `vi`. Kind of a shortcut for `vi $(ag 'foo' | fzf)`, lists files if no search string is given.
 
 ## [fzgit](fzgit)
 

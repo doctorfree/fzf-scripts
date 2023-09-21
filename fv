@@ -12,7 +12,7 @@ o) loop=1 ;;
 s) small=1 ;;
 
 -a    search all dirs and hidden files (possibly quirky)
--c    command to execute [defaults to vim]
+-c    command to execute [defaults to vi]
 -d    run in background (for ie non-terminal programs)
 -h    show this help
 -l    additional arguments to pass to filtering program
@@ -106,7 +106,7 @@ has -v 'fzf' || die
 if [[ -v FV_CMD ]]; then
   cmd="$FV_CMD"
 elif [[ -z "$cmd" ]]; then
-  cmd=$(select_from 'v' 'vim')
+  cmd=$(select_from 'vi' 'vim')
 fi
 
 
