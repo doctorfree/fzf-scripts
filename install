@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+chmod 644 install remove
+find -maxdepth 1 -executable -type f | while read i
+do
+  [ -f $HOME/.local/bin/$i ] && continue
+  ln -s $PWD/$i $HOME/.local/bin/$i
+done
+chmod 755 install remove

@@ -106,7 +106,7 @@ has -v 'fzf' || die
 if [[ -v FV_CMD ]]; then
   cmd="$FV_CMD"
 elif [[ -z "$cmd" ]]; then
-  cmd=$(select_from 'vi' 'vim')
+  cmd=$(select_from 'vi' 'nvim' 'vim')
 fi
 
 

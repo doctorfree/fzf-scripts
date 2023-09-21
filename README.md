@@ -74,22 +74,26 @@ List and connect to wifi networks
 
 *depends on `nmcli`*
 
-# Install
-
-Currently there's no installation script, but if you clone the repo you can easily symlink the scripts here with something like:
+## Install
 
 ``` sh
-cd /path/to/repo/fzf-scripts
-find -maxdepth 1 -executable -type f -exec ln -s -t $HOME/.local/bin $PWD/fzf-scripts/{} \;
+./install
 ```
 
-# Notable Mentions
+## Remove
+
+``` sh
+./remove
+```
+
+## Notable Mentions
 
 * [forgit](https://github.com/wfxr/forgit) - a better version of fzgit
 * [fzf-tab](https://github.com/Aloxaf/fzf-tab) - use fzf to tab-complete everything in your shell
 
-# Legal
+## Legal
 Copyright (C) 2016 Daniel F Gray <DanielFGray@gmail.com>
+Copyright (C) 2023 Ronald Joe Record <ronaldrecord@gmail.com>
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
