@@ -12,7 +12,7 @@ o) loop=1 ;;
 s) small=1 ;;
 
 -a    search all dirs and hidden files (possibly quirky)
--c    command to execute [defaults to vi]
+-c    command to execute [defaults to nvim]
 -d    run in background (for ie non-terminal programs)
 -h    show this help
 -l    additional arguments to pass to filtering program
@@ -88,6 +88,24 @@ select_from() {
   return 1
 }
 
+set_vi() {
+  have_nvim=$(type -p nvim)
+  if [ "${have_nvim}" ]; then
+    if [ "${NVIM_APPNAME}" ]; then
+      alias vi="NVIM_APPNAME=${NVIM_APPNAME} nvim"
+    else
+      if [ -d $HOME/.config/nvim-Lazyman ]; then
+        alias vi="NVIM_APPNAME=nvim-Lazyman nvim"
+        export NVIM_APPNAME="nvim-Lazyman"
+      else
+        alias vi=nvim
+      fi
+    fi
+  else
+    alias vi=vim
+  fi
+}
+
 while getopts 'ac:dhlos' opt; do
   case "$opt" in
     a) allfiles=1 ;;
@@ -103,10 +121,11 @@ shift "$((OPTIND-1))"
 
 has -v 'fzf' || die
 
+set_vi
 if [[ -v FV_CMD ]]; then
   cmd="$FV_CMD"
 elif [[ -z "$cmd" ]]; then
-  cmd=$(select_from 'vi' 'nvim' 'vim')
+  cmd=$(select_from 'nvim' 'vim' 'vi')
 fi
 
 
