@@ -32,11 +32,11 @@ Interactively move files. It was originally just an experiment to see what it wo
 
 runs stdin against programs like sed, awk, jq and shows the result in the preview window
 
-## [goog](goog)
+## [ddgsearch](ddgsearch)
 
-Google search from the command line. This is now broken since google deprecated the API I used and I have yet to update to the newer version..
+DuckDuckGo search from the command line.
 
-*depends on `jq` and `curl`*
+*depends on `jq` and `ddgr`*
 
 ## [igr](igr)
 

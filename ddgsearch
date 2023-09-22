@@ -27,6 +27,24 @@ has() {
   done
 }
 
+select_from() {
+  local o c cmd OPTARG OPTIND
+  cmd='command -v'
+  while getopts 'c:' o; do
+    case "$o" in
+      c) cmd="$OPTARG" ;;
+    esac
+  done
+  shift "$((OPTIND-1))"
+  for c; do
+    if $cmd "${c%% *}" &> /dev/null; then
+      echo "$c"
+      return 0
+    fi
+  done
+  return 1
+}
+
 openurl() {
   local url="$1"
   local browser
@@ -62,14 +80,25 @@ rawurlencode() {
   echo "${encoded}"
 }
 
-has -v curl jq fzf || die
+has -v ddgr jq fzf || die
 
 if [[ -z "$*" ]]; then
   die 'nothing to search for'
 fi
 
-response=$( curl -sfL "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=8&q=$(rawurlencode "$*")" ) || die 'error connecting to google, check connection'
-json=$( jq -c '.["responseData"]["results"] | map("\(.unescapedUrl) \(.title) | \(.content)") | .[]' <<< "$response" ) || die 'error parsing results :('
+# Google killed this, use DuckDuckGo
+# The ddgr command line search tool returns hits in this format:
+#   ddgr --json --noprompt --expand "Ronald Joe Record"
+# [
+#   {
+#     "abstract": "Brief Bio of Ronald Joe Record Ronald Joe Record worked for The Santa Cruz Operation (SCO) for over 25 years. In 2001 he was purchased by Caldera Systems as part of Caldera's acquisition of the server software division of SCO. In 2002 Caldera changed its name back to SCO.",
+#     "title": "Ronald Joe Record",
+#     "url": "https://archive.ronrecord.com/bio.html"
+#   },
+# ]
+#
+response=$( ddgr --json --noprompt --expand "$*" ) || die 'error connecting to DuckDuckGo, check connection'
+json=$( jq -c '. | map("\(.url) | \(.title) | \(.abstract)") | .[]' <<< "$response" ) || die 'error parsing results :('
 url=$( fzf -e --ansi --cycle --inline-info <\
   <( sed -r 's/<[^>]*>//g; s/\\n//g; s/^\s*"//; s/",?$//' <<< "$json" ) |
   cut -d' ' -f1 )

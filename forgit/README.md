@@ -301,11 +301,11 @@ export FORGIT_STASH_FZF_OPTS='
 '
 ```
 
-- `ctrl-e` to view the logs in a vim buffer (`glo` specific).
+- `ctrl-e` to view the logs in a Neovim buffer (`glo` specific).
 
 ```sh
 export FORGIT_LOG_FZF_OPTS='
---bind="ctrl-e:execute(echo {} |grep -Eo [a-f0-9]+ |head -1 |xargs git show |vim -)"
+--bind="ctrl-e:execute(echo {} |grep -Eo [a-f0-9]+ |head -1 |xargs git show |nvim -)"
 '
 ```
 
