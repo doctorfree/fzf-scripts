@@ -6,3 +6,10 @@ do
   [ -L $HOME/.local/bin/$i ] && rm -f $HOME/.local/bin/$i
 done
 chmod 755 install remove
+
+rm -f ~/.fzf-functions.zsh
+grep fzf-functions.zsh $HOME/.zshrc > /dev/null && {
+  grep -v fzf-functions.zsh $HOME/.zshrc > /tmp/zshrc$$
+  cp /tmp/zshrc$$ $HOME/.zshrc
+  rm -f /tmp/zshrc$$
+}

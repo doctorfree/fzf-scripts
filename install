@@ -7,3 +7,12 @@ do
   ln -s $PWD/$i $HOME/.local/bin/$i
 done
 chmod 755 install remove
+
+[ -f $HOME/.zshrc ] && {
+  [ -f $HOME/.fzf-functions.zsh ] || {
+    cp fzf-functions.zsh $HOME/.fzf-functions.zsh
+  }
+  grep fzf-functions.zsh $HOME/.zshrc > /dev/null || {
+    echo "[ -f ~/.fzf-functions.zsh ] && source ~/.fzf-functions.zsh" >> $HOME/.zshrc
+  }
+}
