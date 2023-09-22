@@ -34,7 +34,12 @@ runs stdin against programs like sed, awk, jq and shows the result in the previe
 
 ## [ddgsearch](ddgsearch)
 
-DuckDuckGo search from the command line.
+A wrapper around [ddgr](https://github.com/jarun/ddgr) to search the web using DuckDuckGo.
+Accepts all `ddgr` command line arguments. For example, to search Wikipedia for "hello world":
+
+```sh
+ddgsearch \!w hello world
+```
 
 *depends on `jq` and `ddgr`*
 

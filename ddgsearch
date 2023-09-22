@@ -62,44 +62,15 @@ openurl() {
   $browser "$url"
 }
 
-# http://stackoverflow.com/a/10660730
-rawurlencode() {
-  local string="$*"
-  local strlen=${#string}
-  local encoded=""
-  for (( pos=0; pos < strlen; pos++ )); do
-    c="${string:$pos:1}"
-    case "$c" in
-      [-_.~a-zA-Z0-9])
-        o="$c" ;;
-      *)
-        printf -v o '%%%02x' "'$c"
-    esac
-    encoded+="${o}"
-  done
-  echo "${encoded}"
-}
-
 has -v ddgr jq fzf || die
 
 if [[ -z "$*" ]]; then
   die 'nothing to search for'
 fi
 
-# Google killed this, use DuckDuckGo
-# The ddgr command line search tool returns hits in this format:
-#   ddgr --json --noprompt --expand "Ronald Joe Record"
-# [
-#   {
-#     "abstract": "Brief Bio of Ronald Joe Record Ronald Joe Record worked for The Santa Cruz Operation (SCO) for over 25 years. In 2001 he was purchased by Caldera Systems as part of Caldera's acquisition of the server software division of SCO. In 2002 Caldera changed its name back to SCO.",
-#     "title": "Ronald Joe Record",
-#     "url": "https://archive.ronrecord.com/bio.html"
-#   },
-# ]
-#
 response=$( ddgr --json --noprompt --expand "$*" ) || die 'error connecting to DuckDuckGo, check connection'
 json=$( jq -c '. | map("\(.url) | \(.title) | \(.abstract)") | .[]' <<< "$response" ) || die 'error parsing results :('
-url=$( fzf -e --ansi --cycle --inline-info <\
+url=$( fzf -e --ansi --cycle --inline-info --select-1 <\
   <( sed -r 's/<[^>]*>//g; s/\\n//g; s/^\s*"//; s/",?$//' <<< "$json" ) |
   cut -d' ' -f1 )
 

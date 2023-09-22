@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+git log --oneline "$@" |
+fzf --reverse                                                                  \
+    --ansi                                                                     \
+    --prompt='[Commit] > '                                                     \
+    --bind="ctrl-u:preview-page-up"                                            \
+    --bind="ctrl-d:preview-page-down"                                          \
+    --bind="ctrl-k:preview-up"                                                 \
+    --bind="ctrl-j:preview-down"                                               \
+    --preview="echo {} | cut -d ' ' -f 1 | xargs -I % sh -c 'git show %'"      \
+    --preview-window='down:75%'
