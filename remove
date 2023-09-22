@@ -7,6 +7,14 @@ do
 done
 chmod 755 install remove
 
+[ -d zsh ] && {
+  cd zsh
+  find -maxdepth 1 -executable -type f | while read i
+  do
+    [ -L $HOME/.local/bin/$i ] && rm -f $HOME/.local/bin/$i
+  done
+}
+
 rm -f ~/.fzf-functions.zsh
 grep fzf-functions.zsh $HOME/.zshrc > /dev/null && {
   grep -v fzf-functions.zsh $HOME/.zshrc > /tmp/zshrc$$

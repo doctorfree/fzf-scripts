@@ -7,12 +7,22 @@ do
   ln -s $PWD/$i $HOME/.local/bin/$i
 done
 chmod 755 install remove
+[ -d zsh ] && {
+  cd zsh
+  find -maxdepth 1 -executable -type f | while read i
+  do
+    [ -f $HOME/.local/bin/$i ] && continue
+    ln -s $PWD/$i $HOME/.local/bin/$i
+  done
 
-[ -f $HOME/.zshrc ] && {
-  [ -f $HOME/.fzf-functions.zsh ] || {
-    cp fzf-functions.zsh $HOME/.fzf-functions.zsh
-  }
-  grep fzf-functions.zsh $HOME/.zshrc > /dev/null || {
-    echo "[ -f ~/.fzf-functions.zsh ] && source ~/.fzf-functions.zsh" >> $HOME/.zshrc
+  [ -f $HOME/.zshrc ] && {
+    [ -f $HOME/.fzf-functions.zsh ] || {
+      [ -f fzf-functions.zsh ] && {
+        cp fzf-functions.zsh $HOME/.fzf-functions.zsh
+      }
+    }
+    grep fzf-functions.zsh $HOME/.zshrc > /dev/null || {
+      echo "[ -f ~/.fzf-functions.zsh ] && source ~/.fzf-functions.zsh" >> $HOME/.zshrc
+    }
   }
 }
